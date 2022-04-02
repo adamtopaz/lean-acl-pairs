@@ -20,7 +20,7 @@ lemma one_tmul_inv (a : Kˣ) : ([a⁻¹]ₘ : F ⊗[ℤ] additive Kˣ) = - [a]�
 tensor_product.tmul_neg _ _
 
 /-
-We consider the weak `dual F (F ⊗[ℤ] additive Kˣ)`. 
+We consider the weak topology on `dual F (F ⊗[ℤ] additive Kˣ)`. 
 This is just the pointwise convergence topology, i.e. the topology
 induced by the product topology on the type of functions `F ⊗[ℤ] additive Kˣ → F` 
 where `F` is given the discrete topology.
