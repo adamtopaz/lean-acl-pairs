@@ -1,6 +1,7 @@
 import cl
 import for_mathlib.projective_space.affine_embedding
 import for_mathlib.finite_dimensional
+import data.zmod.algebra
 
 noncomputable theory
 open_locale tensor_product
@@ -30,6 +31,23 @@ begin
   simp [hn,hm],
   apply hnz,
   rw hn, refl,
+end
+
+instance : is_prime_field ℚ := 
+begin
+  constructor, intros a, 
+  rcases a with ⟨m,n,h1,h2⟩,
+  refine ⟨m,n,_,_⟩,
+  { intro c, norm_cast at c, rw c at h1, exact nat.lt_asymm h1 h1 },
+  { norm_cast, exact rat.num_denom', }
+end
+
+instance (p : ℕ) [fact (nat.prime p)] : is_prime_field (zmod p) :=
+begin
+  constructor, intros a, 
+  refine ⟨a.val, 1, _, _⟩,
+  { push_cast, simp },
+  { simp },
 end
 
 namespace bridge
