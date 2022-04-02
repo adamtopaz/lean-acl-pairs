@@ -122,3 +122,12 @@ theorem main_acl_converse
     f [u]ₘ * g [v]ₘ = f [v]ₘ * g [u]ₘ := 
 ...
 ```
+
+## References
+The arguments formalized in this repository are based on the following references.
+
+- Arason, R. Elman, and B. Jacob, *Rigid elements, valuations, and realization of Witt rings*, J. Algebra 110 (1987), no. 2, 449–467.
+- F. A. Bogomolov and Y. Tschinkel, *Commuting elements of Galois groups of function fields*, Motives, polylogarithms and Hodge theory, Part I (Irvine, CA, 1998), 2002, pp. 75–120.
+- I. Efrat, *Construction of valuations from K-theory*, Math. Res. Lett. 6 (1999), no. 3-4, 335–343.
+- J. Koenigsmann, *From p-rigid elements to valuations (with a Galois-characterization of p-adic fields)*, J. Reine Angew. Math. 465 (1995), 165–182.
+- A. Topaz, *Commuting-liftable subgroups of Galois groups II*, J. Reine Angew. Math. 730 (2017), 65–133.
