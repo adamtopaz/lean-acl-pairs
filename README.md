@@ -11,7 +11,7 @@ open_locale tensor_product
 
 /-
 NOTE: This introduces notation `[a]ₘ` for `a : Kˣ`, where `[a]ₘ` is the element of
-the bas-change `F ⊗[ℤ] (additive Kˣ)` corresponding to `a`. 
+the base-change `F ⊗[ℤ] (additive Kˣ)` corresponding to `a`. 
 -/
 notation `[`:max a`]ₘ`:max := 1 ⊗ₜ (additive.of_mul a)
 
@@ -23,7 +23,7 @@ lemma one_tmul_inv (a : Kˣ) : ([a⁻¹]ₘ : F ⊗[ℤ] additive Kˣ) = - [a]�
 tensor_product.tmul_neg _ _
 
 /-
-We consider the weak `dual F (F ⊗[ℤ] additive Kˣ)`. 
+We consider the weak topology on `dual F (F ⊗[ℤ] additive Kˣ)`. 
 This is just the pointwise convergence topology, i.e. the topology
 induced by the product topology on the type of functions `F ⊗[ℤ] additive Kˣ → F` 
 where `F` is given the discrete topology.

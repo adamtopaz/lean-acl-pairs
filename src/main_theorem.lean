@@ -8,7 +8,7 @@ open_locale tensor_product
 
 /-
 NOTE: This introduces notation `[a]ₘ` for `a : Kˣ`, where `[a]ₘ` is the element of
-the bas-change `F ⊗[ℤ] (additive Kˣ)` corresponding to `a`. 
+the base-change `F ⊗[ℤ] (additive Kˣ)` corresponding to `a`. 
 -/
 notation `[`:max a`]ₘ`:max := 1 ⊗ₜ (additive.of_mul a)
 
