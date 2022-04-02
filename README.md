@@ -45,7 +45,7 @@ local attribute [instance]
 variable [is_prime_field F]
 
 example : is_prime_field ℚ := infer_instance
-example (p : ℕ) [fact (nat.is_prime p)] : is_prime_field (zmod p) := infer_instance
+example (p : ℕ) [fact (nat.prime p)] : is_prime_field (zmod p) := infer_instance
 
 /- The main theorem of `acl`-pairs. -/
 theorem main_acl_theorem 
