@@ -14,7 +14,7 @@ begin
   simp only [linear_map.coe_comp, function.comp_app, mkq_apply, quotient.quot_mk_eq_mk],
   rw [← sub_eq_zero, ← submodule.mkq_apply, ← submodule.mkq_apply,
     ← linear_map.map_sub, submodule.mkq_apply, submodule.quotient.mk_eq_zero],
-  simp only [mem_comap, submodule.coe_subtype, coe_sub, coe_of_le, coe_mk],
+  simp only [mem_comap, submodule.coe_subtype, add_subgroup_class.coe_sub, coe_of_le, coe_mk],
   convert (T.neg_mem hy), abel,
 end
 
@@ -68,7 +68,7 @@ begin
     refine ⟨c,rfl⟩ },
   rw [← sub_eq_zero, ← submodule.mkq_apply, ← submodule.mkq_apply, ← linear_map.map_sub,
     submodule.mkq_apply, submodule.quotient.mk_eq_zero],
-  simp only [mem_comap, submodule.coe_subtype, coe_sub, coe_of_le, coe_mk],
+  simp only [mem_comap, submodule.coe_subtype, add_subgroup_class.coe_sub, coe_of_le, coe_mk],
   convert T.add_mem (T.neg_mem ht) (T.neg_mem hy),
   abel,
 end
@@ -121,8 +121,8 @@ begin
   dsimp only [← submodule.mkq_apply],
   rw [← linear_map.map_smul, ← sub_eq_zero, ← linear_map.map_sub,
     submodule.mkq_apply, submodule.quotient.mk_eq_zero],
-  simp only [mem_comap, submodule.coe_subtype, coe_sub, coe_smul_of_tower, 
-    coe_of_le, subtype.coe_mk],
+  simp only [mem_comap, submodule.coe_subtype, add_subgroup_class.coe_sub, 
+    coe_smul_of_tower, coe_of_le, subtype.coe_mk],
   rw hh, simpa,
   exact mem_sup_right hz,
   exact mem_sup_left hy,
