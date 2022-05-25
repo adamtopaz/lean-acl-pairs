@@ -97,7 +97,9 @@ begin
   have HH := h.2 u v huv f' g' f'.2 g'.2,
   dsimp only [f',g', E] at HH,
   simp only [equiv_to_dual_mod_of_is_closed_symm_apply_apply H h.1] at HH,
-  change f (e 0) * g (e 1) = f (e 1) * g (e 0) at HH,
+  have he0 : e 0 = (H.dual_annihilator_comap.mkq u.as) := rfl, 
+  have he1 : e 1 = (H.dual_annihilator_comap.mkq v.as) := rfl,
+  simp only [← he0, ← he1] at HH,
   dsimp only [e,f,g,β] at HH,
   simp only [
       ← basis.sum_extend_extends _ c 0, 

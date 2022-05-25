@@ -144,7 +144,7 @@ begin
   rintros ⟨hx,hx'⟩ ⟨hy,hy'⟩,
   split,
   { exact rp.OO_p_mul_mem hx hy },
-  { rw mul_inv₀, exact rp.OO_p_mul_mem hx' hy' },
+  { rw mul_inv, exact rp.OO_p_mul_mem hx' hy' },
 end
 
 -- Observation 2.3 (1), part 5
@@ -202,7 +202,7 @@ begin
     { apply inv_ne_zero, exact mul_ne_zero (H.ne_zero_of_mem hx) this },
     have hhy := hy1.1,
     contrapose! hhy,
-    rw mul_inv₀ at hhy,
+    rw mul_inv at hhy,
     rw ← inv_inv y,
     apply H.inv_mem,
     convert H.mul_mem hx hhy,

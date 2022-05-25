@@ -33,7 +33,7 @@ lemma mul_mem_units (R : valuation_subring K) {x y : Kˣ}
   x * y ∈ R.units := 
 begin
   split, push_cast, apply R.mul_mem _ _ hx.1 hy.1,
-  simp only [units.coe_mul], rw mul_inv₀, apply R.mul_mem _ _ hx.2 hy.2, 
+  simp only [units.coe_mul], rw mul_inv, apply R.mul_mem _ _ hx.2 hy.2, 
 end
 
 def nonunits (R : valuation_subring K) : set K :=

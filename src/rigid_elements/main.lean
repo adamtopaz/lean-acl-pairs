@@ -190,7 +190,7 @@ begin
     apply rp'.mem_of_neg_mem, apply rp'.le,
     have : 1 - -a * z⁻¹ * (-b * z) = (1 - a * b), by field_simp; ring, rw this at e1, clear this,
     convert T.mul_mem e2 (T.inv_mem e1), 
-    rw [mul_inv₀, mul_comm, mul_assoc, 
+    rw [mul_inv, mul_comm, mul_assoc, 
       mul_comm _ (1 - a * b), ← mul_assoc _ (1 - a * b), inv_mul_cancel], 
     field_simp, ring,
     { intro c, apply T.ne_zero_of_mem e2, simp [c] },

@@ -56,7 +56,7 @@ def base_change_equiv :
     intros f g, ext x,
     apply x.induction_on,
     { simp },
-    { intros x y, simp },
+    { intros x y, simp [mul_add], },
     { intros r a h1 h2, simp only [linear_map.map_add, h1, h2] }
   end,
   map_smul' := begin
