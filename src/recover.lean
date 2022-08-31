@@ -138,8 +138,8 @@ theorem main_theorem_mul_char_ne_two
   ∃ (R : valuation_subring K)
     (H : submodule F (mul_base_change K F))
     (hTH : T ≤ H)
-    (units : ∀ u : Kˣ, u ∈ R.units → u.as ∈ H)
-    (principal_units : ∀ u : Kˣ, u ∈ R.principal_units → u.as ∈ T)
+    (units : ∀ u : Kˣ, u ∈ R.unit_group → u.as ∈ H)
+    (principal_units : ∀ u : Kˣ, u ∈ R.principal_unit_group → u.as ∈ T)
     (fd : finite_dimensional F (↥H ⧸ T.comap H.subtype)),
     finrank F (↥H ⧸ T.comap H.subtype) ≤ 1 := 
 begin
@@ -197,8 +197,8 @@ theorem main_theorem_mul_char_two
   ∃ (R : valuation_subring K)
     (H : submodule F (mul_base_change K F))
     (hTH : T ≤ H)
-    (units : ∀ u : Kˣ, u ∈ R.units → u.as ∈ H)
-    (principal_units : ∀ u : Kˣ, u ∈ R.principal_units → u.as ∈ T)
+    (units : ∀ u : Kˣ, u ∈ R.unit_group → u.as ∈ H)
+    (principal_units : ∀ u : Kˣ, u ∈ R.principal_unit_group → u.as ∈ T)
     (fd : finite_dimensional F (↥H ⧸ T.comap H.subtype)),
     finrank F (↥H ⧸ T.comap H.subtype) ≤ 1 := 
 begin
@@ -212,7 +212,7 @@ begin
   let R := ht3.valuation_subring, use R,
   let H := T ⊔ (submodule.span F ({t'.as} : set (mul_base_change K F))),
   have hfd : finite_dimensional F (↥H ⧸ (T.comap H.subtype)), 
-  { let e := (T.comap H.subtype).mkq.comp (submodule.of_le le_sup_right),
+  { let e := (T.comap H.subtype).mkq.comp (submodule.of_le (le_sup_right : _ ≤ T ⊔ _)),
     have he : function.surjective e, 
     { apply submodule.mkq_comp_sup_mod_surjective },
     apply e.finite_dimensional_of_surjective, rwa linear_map.range_eq_top },
@@ -257,8 +257,8 @@ theorem main_theorem_mul
   ∃ (R : valuation_subring K)
     (H : submodule F (mul_base_change K F))
     (hTH : T ≤ H)
-    (units : ∀ u : Kˣ, u ∈ R.units → u.as ∈ H)
-    (principal_units : ∀ u : Kˣ, u ∈ R.principal_units → u.as ∈ T)
+    (units : ∀ u : Kˣ, u ∈ R.unit_group → u.as ∈ H)
+    (principal_units : ∀ u : Kˣ, u ∈ R.principal_unit_group → u.as ∈ T)
     (fd : finite_dimensional F (↥H ⧸ T.comap H.subtype)),
     finrank F (↥H ⧸ T.comap H.subtype) ≤ 1 := 
 begin

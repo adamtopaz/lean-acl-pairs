@@ -53,11 +53,11 @@ theorem main_acl_converse
   -- (2) the elements of `D` act trivially on `-1 : Kˣ`;
   (hnegone : ∀ (f : dual F (F ⊗[ℤ] additive Kˣ)) (hf : f ∈ D), f [-1]ₘ = 0) 
   -- (3) the elements of `I` act trivially on the units of `R`;
-  (units : ∀ (u : Kˣ) (hu : u ∈ R.units) 
+  (units : ∀ (u : Kˣ) (hu : u ∈ R.unit_group) 
     (f : dual F (F ⊗[ℤ] additive Kˣ))
     (hf : f ∈ I), f [u]ₘ = 0)
   -- (4) the elements of `D` act trivially on the principal units of `R`;
-  (punits : ∀ (u : Kˣ) (hu : u ∈ R.principal_units) 
+  (punits : ∀ (u : Kˣ) (hu : u ∈ R.principal_unit_group) 
     (f : dual F (F ⊗[ℤ] additive Kˣ))
     (hf : f ∈ D), f [u]ₘ = 0)
   -- (5) `D/I` is finite dimensional;
@@ -82,43 +82,55 @@ begin
     submodule.mkq_apply, submodule.quotient.mk_eq_zero] at hcf hcg,
   simp only [submodule.mem_comap, submodule.coe_subtype, submodule.coe_sub, 
     submodule.coe_smul_of_tower, submodule.coe_mk] at hcg hcf,
-  have hfI : ∀ (t : Kˣ) (ht : t ∈ R.units), f [t]ₘ = cf • e [t]ₘ, 
+  have hfI : ∀ (t : Kˣ) (ht : t ∈ R.unit_group), f [t]ₘ = cf • e [t]ₘ, 
   { intros t ht, symmetry, rw ← sub_eq_zero, 
     rw [← linear_map.smul_apply, ← linear_map.sub_apply], exact units t ht _ hcf },
-  have hgI : ∀ (t : Kˣ) (ht : t ∈ R.units), 
+  have hgI : ∀ (t : Kˣ) (ht : t ∈ R.unit_group), 
     g [t]ₘ = cg • e [t]ₘ, 
   { intros t ht, symmetry, rw ← sub_eq_zero, 
     rw [← linear_map.smul_apply, ← linear_map.sub_apply], exact units t ht _ hcg },
-  by_cases hunituv : u ∈ R.units ∧ v ∈ R.units,
+  by_cases hunituv : u ∈ R.unit_group ∧ v ∈ R.unit_group,
   { cases hunituv with huu hvu,
     rw [hfI _ huu, hgI _ huu, hfI _ hvu, hgI _ hvu],
     simp_rw [smul_eq_mul], ring },
   push_neg at hunituv,
-  by_cases huu : u ∈ R.units,
-  { have hvu : u ∈ R.principal_units, 
-    { split, exact R.sub_mem huu.1 R.one_mem,
-      intro c, apply hunituv huu, obtain ⟨w,hw⟩ := c, convert R.neg_mem_units hw.1, 
+  by_cases huu : u ∈ R.unit_group,
+  { have hvu : u ∈ R.principal_unit_group, 
+    { rw valuation_subring.mem_principal_unit_group_iff_mem,
+      rw valuation_subring.mem_nonunits_iff_mem_and_nmem,
+      rw valuation_subring.mem_unit_group_iff_mem_and_inv_mem at huu,
+      split, exact R.sub_mem huu.1 R.one_mem,
+      intro c, apply hunituv _, 
+      swap, rwa valuation_subring.mem_unit_group_iff_mem_and_inv_mem,
+      obtain ⟨w,hw⟩ := c, convert R.neg_mem_units hw.1, 
       ext, push_cast, rw hw.2, rw neg_sub, convert (congr_arg (λ e : K, e - u) huv), ring },
     rw [punits u hvu f hf, punits u hvu g hg, zero_mul, mul_zero] },
-  dsimp [valuation_subring.units] at huu, push_neg at huu,
+  rw valuation_subring.mem_unit_group_iff_mem_and_inv_mem at huu, push_neg at huu,
   by_cases huR : (u : K) ∈ R, 
-  { have hvu : v ∈ R.principal_units, 
-    { split, convert R.neg_mem _ huR, rwa [sub_eq_iff_eq_add, eq_neg_add_iff_add_eq],
-      intro c, apply huu huR, obtain ⟨w,hw⟩ := c, convert (R.neg_mem_units hw.1).2,
+  { have hvu : v ∈ R.principal_unit_group, 
+    { rw valuation_subring.mem_principal_unit_group_iff_mem,
+      rw valuation_subring.mem_nonunits_iff_mem_and_nmem,
+      split, convert R.neg_mem _ huR, rwa [sub_eq_iff_eq_add, eq_neg_add_iff_add_eq],
+      intro c, apply huu huR, obtain ⟨w,hw⟩ := c, 
+      have := (R.neg_mem_units hw.1), rw valuation_subring.mem_unit_group_iff_mem_and_inv_mem at this,
+      convert this.2,
       ext, push_cast, rwa [hw.2, neg_sub, eq_sub_iff_add_eq] },
     rw [punits v hvu f hf, punits v hvu g hg, zero_mul, mul_zero] },
   { have huu : (u : K)⁻¹ ∈ R, 
     { cases R.mem_or_inv_mem (u : K), contradiction, assumption },
     have huz : (u : K) ≠ 0, 
     { intro c, apply huR, rw c, apply R.zero_mem },
-    have huv' : -(u⁻¹ * v) ∈ R.principal_units, 
-    { split, push_cast, rw ← neg_add', apply R.neg_mem, 
+    have huv' : -(u⁻¹ * v) ∈ R.principal_unit_group, 
+    { rw valuation_subring.mem_principal_unit_group_iff_mem,
+      rw valuation_subring.mem_nonunits_iff_mem_and_nmem,
+      split, push_cast, rw ← neg_add', apply R.neg_mem, 
       have : (u : K) + v ∈ R, rw huv, apply R.one_mem,
       convert R.mul_mem _ _ huu this, field_simp, ring,
       intro c, apply huR, 
       obtain ⟨w,hw1,hw2⟩ := c, push_cast at hw2, field_simp at hw2,
       rw [← neg_add', add_comm, huv] at hw2,
       have : (w : K) * u ∈ R, rw hw2, apply R.neg_mem, apply R.one_mem,
+      erw valuation_subring.mem_unit_group_iff_mem_and_inv_mem at hw1,
       convert R.mul_mem _ _ this hw1.2, field_simp [w.ne_zero], ring },
     have hfuv : f [u]ₘ = f [v]ₘ, 
     { symmetry, rw [← sub_eq_zero, ← f.map_sub, sub_eq_add_neg, ← one_tmul_inv,
@@ -164,11 +176,11 @@ theorem main_acl_theorem
     -- (1) `I` is contained in `D`;
     (le : I ≤ D)
     -- (2) the elements `f` of `I` satisfy `f [u]ₘ = 0` for `R`-units;
-    (units : ∀ (u : Kˣ) (hu : u ∈ R.units) 
+    (units : ∀ (u : Kˣ) (hu : u ∈ R.unit_group) 
       (f : dual F (F ⊗[ℤ] additive Kˣ))
       (hf : f ∈ I), f [u]ₘ = 0)
     -- (3) the elements `f` of `D` satisfy `f [u]ₘ = 0` for `R`-principal-units;
-    (punits : ∀ (u : Kˣ) (hu : u ∈ R.principal_units) 
+    (punits : ∀ (u : Kˣ) (hu : u ∈ R.principal_unit_group) 
       (f : dual F (F ⊗[ℤ] additive Kˣ))
       (hf : f ∈ D), f [u]ₘ = 0)
     -- (4) the quotient `D / I` is finite dimensional;
@@ -178,7 +190,9 @@ theorem main_acl_theorem
 begin
   rw submodule.is_closed_iff at h1,
   let T := D.dual_annihilator_comap,
-  have hTD : T.dual_annihilator = D := h1.dual_comap_dual,
+  have hTD : T.dual_annihilator = D,
+  { dsimp only [T],
+    exact h1.dual_comap_dual },
   have hacl : D.acl,
   { refine ⟨h1, h3, h2⟩ },
   have hacl' : T.dual_annihilator.acl, 

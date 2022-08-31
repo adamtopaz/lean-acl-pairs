@@ -6,7 +6,8 @@ variables {K V : Type*} [field K] [add_comm_group V] [module K V]
 open submodule finite_dimensional
 
 lemma submodule.mkq_comp_sup_mod_surjective (S T : submodule K V) :
-  function.surjective ((T.comap (T ⊔ S).subtype).mkq.comp (submodule.of_le le_sup_right)) :=
+  function.surjective ((T.comap (T ⊔ S).subtype).mkq.comp 
+    (submodule.of_le (le_sup_right : _ ≤ T ⊔ S))) :=
 begin
   rintro ⟨t,ht⟩, rw submodule.mem_sup at ht,
   obtain ⟨y,hy,z,hz,rfl⟩ := ht,

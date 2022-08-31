@@ -722,7 +722,8 @@ begin
       use ![1,1,-1], split,
       { simp [fin.sum_univ_succ] },
       { use 0, norm_num } } },
-  refine ⟨key, _⟩,
+  refine ⟨_, _⟩,
+  { exact_mod_cast key },
   apply eq_of_config _ _ _ _ _ _ _ (frac_config' F n),
   { rw [← h2, ← C.map_one],  
     convert C.dependent_neg _ _, 
@@ -911,23 +912,23 @@ begin
       simp only [nat.nat_zero_eq_zero, int.of_nat_eq_coe, int.coe_nat_zero, int.cast_zero],
       use 1, symmetry, rw [C.map_one, mk_eq_mk_iff],
       simp only [ne.def, prod.mk_eq_zero, eq_self_iff_true, and_true] at H,
-      use (is_unit.mk0 _ H).unit, simpa [units.smul_def] },
+      use (is_unit.mk0 _ H).unit, simp [units.smul_def] },
     simp only [int.of_nat_eq_coe, int.coe_nat_succ, int.cast_add, int.cast_coe_nat, int.cast_one],
     by_cases hn : (n : F) = 0,
     { use 1 + x, 
       have H : (m : F) + 1 ≠ 0, by simpa [hn] using h,
       simp only [hn], rw C.map_one_add_x, symmetry, rw mk_eq_mk_iff,
-      use (is_unit.mk0 ((m : F) + 1) H).unit, simpa [units.smul_def] },
+      use (is_unit.mk0 ((m : F) + 1) H).unit, simp [units.smul_def] },
     { have := (C.map_to_frac_horizontal n (m + 1) hn (by norm_num)).2, 
       push_cast at this,
       refine ⟨_, this⟩ } },
-  { let H := h, push_cast at H, 
+  { let H := h, --push_cast at H, 
     by_cases hn : (n : F) = 0, 
     { simp only [hn, int.cast_neg_succ_of_nat, neg_add_rev, ne.def, prod.mk_eq_zero, 
         eq_self_iff_true, and_true, true_and] at H ⊢,  
       use 1 + x,
       symmetry, rw [C.map_one_add_x, mk_eq_mk_iff],
-      use (is_unit.mk0 _ H).unit, simpa [units.smul_def] },
+      use (is_unit.mk0 _ H).unit, simp [units.smul_def] },
     { have := (C.negate_snd.map_to_frac_horizontal n (m + 1) hn (by norm_num)).2,
       push_cast at this ⊢,
       let E := negate_snd_equiv F,
@@ -937,8 +938,8 @@ begin
       rw ← map_comp at this,
       conv_lhs at this 
       { congr, erw negate_snd_equiv_comp_negate_snd_equiv },
-      erw map_id at this,
-      refine ⟨_, this⟩, } }
+      erw map_id at this, dsimp [id] at this,
+      refine ⟨_, by exact_mod_cast this⟩, } }
 end
 
 end setup

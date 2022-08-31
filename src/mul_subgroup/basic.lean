@@ -3,8 +3,8 @@ import tactic.field_simp
 
 variables (K : Type*) [field K]
 
-lemma is_unit.inv {G : Type*} [group_with_zero G] {x : G} (hx : is_unit x) : is_unit x⁻¹ := 
-⟨⟨x⁻¹,x, by field_simp [hx.ne_zero], by field_simp [hx.ne_zero]⟩, rfl⟩
+--lemma is_unit.inv {G : Type*} [group_with_zero G] {x : G} (hx : is_unit x) : is_unit x⁻¹ := 
+--⟨⟨x⁻¹,x, by field_simp [hx.ne_zero], by field_simp [hx.ne_zero]⟩, rfl⟩
 
 structure mul_subgroup :=
 (carrier : set K)
@@ -58,7 +58,7 @@ def mk' (T : subgroup Kˣ) : mul_subgroup K :=
   end,
   inv_mem' := begin
     rintros x ⟨hx,hx'⟩, refine ⟨hx.inv, _⟩,
-    convert T.inv_mem hx', ext, simpa only [units.coe_inv'],
+    convert T.inv_mem hx', ext, simpa only [units.coe_inv],
   end,
   one_mem' := ⟨is_unit_one, by { convert T.one_mem, ext, refl }⟩,
   is_unit' := λ x hx, hx.some }
@@ -68,7 +68,7 @@ def subgroup (T : mul_subgroup K) : subgroup Kˣ :=
   mul_mem' := λ a b ha hb, T.mul_mem ha hb,
   one_mem' := T.one_mem,
   inv_mem' := λ a ha, begin
-    dsimp, convert T.inv_mem ha using 1, simp only [units.coe_inv'],
+    dsimp, convert T.inv_mem ha using 1, simp only [units.coe_inv],
   end }
 
 end mul_subgroup

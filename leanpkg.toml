@@ -1,8 +1,8 @@
 [package]
 name = "lean-cl-pairs"
 version = "0.1"
-lean_version = "leanprover-community/lean:3.42.1"
+lean_version = "leanprover-community/lean:3.47.0"
 path = "src"
 
 [dependencies]
-mathlib = {git = "https://github.com/leanprover-community/mathlib", rev = "18936e552fbb42e4599fededbd126cadaad12866"}
+mathlib = {git = "https://github.com/leanprover-community/mathlib", rev = "39014ec913961a73600b7bee785481b9acee70b4"}

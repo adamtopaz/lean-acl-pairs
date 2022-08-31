@@ -29,8 +29,8 @@ begin
   cases int.mod_two_eq_zero_or_one m with hm hm;
   cases nat.mod_two_eq_zero_or_one n with hn hn;
   simp [hn,hm],
-  apply hnz,
-  rw hn, refl,
+  apply hnz, 
+  rw hn, push_cast,
 end
 
 instance : is_prime_field ℚ := 
@@ -669,7 +669,7 @@ begin
   have : S.A - 1 = (-m) / n, 
   { field_simp at ⊢ hh, rw ← hh, ring },
   rw this at h2, dsimp [units.smul_def] at h2, field_simp at h2,
-  apply_fun (λ e, e / (m : F)) at h2, field_simp [hm] at h2,
+  --apply_fun (λ e, e / (m : F)) at h2, field_simp [hm] at h2,
   rw (show (a : F) * m * n = m * (a * n), by ring) at h2,
   rw (show -((S.ψ (units.mk0 t htz)).fst * S.B * m) = 
     m * (-(S.ψ (units.mk0 t htz)).fst * S.B), by ring) at h2,

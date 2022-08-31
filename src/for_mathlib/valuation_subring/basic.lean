@@ -12,34 +12,22 @@ lemma sub_mem (R : valuation_subring K) {x y : K} (hx : x ∈ R) (hy : y ∈ R) 
   x - y ∈ R := 
 R.to_subring.sub_mem hx hy
 
-def units (R : valuation_subring K) : set Kˣ := 
-{ u | (u : K) ∈ R ∧ (u⁻¹ : K) ∈ R }
-
-lemma neg_mem_units (R : valuation_subring K) {x : Kˣ} (hx : x ∈ R.units) : 
-  -x ∈ R.units := 
+lemma neg_mem_units (R : valuation_subring K) {x : Kˣ} (hx : x ∈ R.unit_group) : 
+  -x ∈ R.unit_group := 
 begin
-  split, convert R.neg_mem _ hx.1, convert R.neg_mem _ hx.2, field_simp,
+  change R.valuation _ = _,
+  change R.valuation _ = _ at hx,
+  simpa only [units.coe_hom_apply, units.coe_neg, valuation.map_neg] using hx,
 end
 
-lemma one_mem_units (R : valuation_subring K) : (1 : Kˣ) ∈ R.units := 
-begin
-  split,
-  exact R.one_mem,
-  convert R.one_mem, simp,
-end
+lemma mem_unit_group_iff_mem_and_inv_mem (R : valuation_subring K) (u : Kˣ) : 
+  u ∈ R.unit_group ↔ (u : K) ∈ R ∧ (u⁻¹ : K) ∈ R := 
+sorry
 
-lemma mul_mem_units (R : valuation_subring K) {x y : Kˣ} 
-  (hx : x ∈ R.units) (hy : y ∈ R.units) :
-  x * y ∈ R.units := 
-begin
-  split, push_cast, apply R.mul_mem _ _ hx.1 hy.1,
-  simp only [units.coe_mul], rw mul_inv, apply R.mul_mem _ _ hx.2 hy.2, 
-end
+lemma mem_nonunits_iff_mem_and_nmem (R : valuation_subring K) (x : K) : 
+  x ∈ R.nonunits ↔ x ∈ R ∧ x ∉ (coe : Kˣ → K) '' R.unit_group := sorry
 
-def nonunits (R : valuation_subring K) : set K :=
-{ x | x ∈ R ∧ x ∉ (coe : Kˣ → K) '' R.units }
-
-def principal_units (R : valuation_subring K) : set Kˣ := 
-{ u | (u : K) - 1 ∈ R.nonunits }
+lemma mem_principal_unit_group_iff_mem (R : valuation_subring K) (x : Kˣ) :
+  x ∈ R.principal_unit_group ↔ (x : K) - 1 ∈ R.nonunits := sorry
 
 end valuation_subring

@@ -109,23 +109,27 @@ def rigid_pair.preadditive.valuation_subring
   mem_or_inv_mem' := h.mem_or_inv_mem }
 
 lemma rigid_pair.preadditive.units_eq 
-  (h : rp.preadditive) (u : Kˣ) : u ∈ h.valuation_subring.units ↔ (u : K) ∈ rp.UU :=
+  (h : rp.preadditive) (u : Kˣ) : 
+  u ∈ h.valuation_subring.unit_group ↔ 
+  (u : K) ∈ rp.UU :=
 begin
   split,
   { intros h, 
+    rw valuation_subring.mem_unit_group_iff_mem_and_inv_mem at h, 
     rcases h with ⟨(h1|h1),(h2|h2)⟩,
     { rw OO_m_mem_iff_inv_nmem at h1, contradiction, exact u.ne_zero, exact h1.1 },
     { exfalso, apply h1.1, convert H.inv_mem h2.1, simp },
     { exfalso, apply h2.1, convert H.inv_mem h1.1 },
     { refine ⟨h1,h2⟩ } },
   { intros h, 
+    rw valuation_subring.mem_unit_group_iff_mem_and_inv_mem, 
     split,
     exact or.inr h.1,
     exact or.inr h.2 }
 end
 
 lemma rigid_pair.preadditive.mem_of_mem_units
-  (h : rp.preadditive) (u : Kˣ) (hu : u ∈ h.valuation_subring.units) : (u : K) ∈ H :=
+  (h : rp.preadditive) (u : Kˣ) (hu : u ∈ h.valuation_subring.unit_group) : (u : K) ∈ H :=
 begin
   rw h.units_eq at hu,
   cases hu with hu _,
@@ -133,9 +137,12 @@ begin
 end
 
 lemma rigid_pair.preadditive.mem_of_mem_principal_units
-  (h : rp.preadditive) (u : Kˣ) (hu : u ∈ h.valuation_subring.principal_units) : 
+  (h : rp.preadditive) (u : Kˣ) 
+  (hu : u ∈ h.valuation_subring.principal_unit_group) : 
   (u : K) ∈ T := 
 begin
+  rw valuation_subring.mem_principal_unit_group_iff_mem at hu,
+  rw valuation_subring.mem_nonunits_iff_mem_and_nmem at hu,
   change _ ∈ rp.OO ∧ _ ∉ _ at hu,
   cases hu with hu1 hu2,
   by_cases hune1 : u = 1,
@@ -143,7 +150,7 @@ begin
   change ¬ ∃ v, _ at hu2, push_neg at hu2, 
   have husub1 : (u : K) - 1 ≠ 0, { contrapose! hune1, rw sub_eq_zero at hune1, ext, exact hune1 },
   specialize hu2 (units.mk0 _ husub1),
-  have : units.mk0 _ husub1 ∉ h.valuation_subring.units,
+  have : units.mk0 _ husub1 ∉ h.valuation_subring.unit_group,
   { intro c, exact hu2 c rfl },
   rw h.units_eq at this,
   cases hu1, convert hu1.2, ring,
