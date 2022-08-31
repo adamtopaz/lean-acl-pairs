@@ -22,7 +22,13 @@ end
 
 lemma mem_unit_group_iff_mem_and_inv_mem (R : valuation_subring K) (u : Kˣ) : 
   u ∈ R.unit_group ↔ (u : K) ∈ R ∧ (u⁻¹ : K) ∈ R := 
-sorry
+begin
+  split,
+  { rintros (h : R.valuation u = 1), split, 
+    rw ← valuation_subring.valuation_le_one_iff, apply le_of_eq, assumption,
+    rw ← valuation_subring.valuation_le_one_iff, apply le_of_eq, simpa },
+  { intros hh, sorry }
+end
 
 lemma mem_nonunits_iff_mem_and_nmem (R : valuation_subring K) (x : K) : 
   x ∈ R.nonunits ↔ x ∈ R ∧ x ∉ (coe : Kˣ → K) '' R.unit_group := sorry
