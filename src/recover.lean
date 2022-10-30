@@ -88,7 +88,7 @@ begin
     rw fintype.not_linear_independent_iff at hh,
     obtain ⟨g,h1,i,h2⟩ := hh,
     simp only [fin.sum_univ_succ, submodule.mkq_apply, matrix.cons_val_zero, 
-      fintype.univ_of_subsingleton, fin.mk_eq_subtype_mk, fin.mk_zero, 
+      fintype.univ_of_subsingleton, fin.mk_zero, 
       matrix.cons_val_succ, finset.sum_singleton, fin.succ_zero_eq_one] at h1,
     let a := g 0,
     let b := g 1, 

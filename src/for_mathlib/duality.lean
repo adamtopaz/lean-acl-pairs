@@ -160,7 +160,7 @@ begin
     rw fintype.not_linear_independent_iff at c, 
     obtain ⟨g,h1,i,h2⟩ := c,
     apply h2,
-    simp only [fintype.univ_of_subsingleton, fin.mk_eq_subtype_mk, fin.mk_zero, matrix.cons_val_fin_one, finset.sum_singleton,
+    simp only [fintype.univ_of_subsingleton, fin.mk_zero, matrix.cons_val_fin_one, finset.sum_singleton,
       smul_eq_zero] at h1,
     fin_cases i, cases h1, assumption,
     contradiction },
@@ -283,13 +283,13 @@ begin
   intros v hv,
   let t : H := ⟨v,hv⟩,
   apply_fun (λ e, e (submodule.mkq _ t)) at h,
-  exact h,
+  exact h
 end 
 begin
   intros e,
   let g : dual K H := e.comp (submodule.mkq _),
   obtain ⟨f,hf⟩ := subspace.dual_restrict_surjective g,
-  have hfT : f ∈ T.dual_annihilator,
+  have hfT : f ∈ T.dual_annihilator, 
   { rw mem_dual_annihilator,  
     intros v hv,
     let u : H := ⟨v, le hv⟩,
@@ -300,8 +300,11 @@ begin
     { simpa only [mkq_apply, quotient.mk_eq_zero, mem_comap, coe_subtype, coe_mk] },
     simp [this] },
   let t : T.dual_annihilator := ⟨f,hfT⟩,
-  use submodule.mkq _ t,
-  ext, dsimp only [linear_map.comp_apply, mod_to_dual_mod_apply, t],
+  let tt := submodule.mkq (H.dual_annihilator.comap T.dual_annihilator.subtype) t,
+  use tt,
+  ext,
+  dsimp only [linear_map.comp_apply, tt],
+  rw mod_to_dual_mod_apply T H t x,
   change dual_restrict _ f x = _, rw hf, refl,
 end
 
