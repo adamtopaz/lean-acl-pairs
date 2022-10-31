@@ -1,4 +1,4 @@
-import bridge
+import bridge_char
 import rigid_elements.main
 import for_mathlib.valuation_subring.basic
 
@@ -8,7 +8,7 @@ open_locale classical
 
 open module
 
-variables {K F : Type*} [field K] [field F] [is_prime_field F]
+variables {K F : Type*} [field K] [field F] --[is_prime_field F]
 
 open finite_dimensional
 
@@ -66,6 +66,7 @@ begin
 end
 
 lemma mk_rigid_pair_char_two
+  [is_prime_field F]
   (htwo : (2 : F) = 0)
   (T : submodule F (mul_base_change K F)) 
   (hT : T.dual_annihilator.acl) : 
@@ -132,6 +133,7 @@ end
 end main_theorem_mul_setup
 
 theorem main_theorem_mul_char_ne_two 
+  [is_prime_field F]
   (htwo : (2 : F) ≠ 0)
   (T : submodule F (mul_base_change K F)) 
   (hT : T.dual_annihilator.acl) : 
@@ -191,6 +193,7 @@ begin
 end
 
 theorem main_theorem_mul_char_two 
+  [is_prime_field F]
   (htwo : (2 : F) = 0)
   (T : submodule F (mul_base_change K F)) 
   (hT : T.dual_annihilator.acl) : 
@@ -252,6 +255,7 @@ begin
 end
 
 theorem main_theorem_mul
+  [is_prime_field F]
   (T : submodule F (mul_base_change K F)) 
   (hT : T.dual_annihilator.acl) : 
   ∃ (R : valuation_subring K)
@@ -265,4 +269,68 @@ begin
   by_cases htwo : (2 : F) = 0,
   apply main_theorem_mul_char_two, assumption',
   apply main_theorem_mul_char_ne_two, assumption'
+end
+
+theorem main_theorem_mul_char
+  (p ℓ : ℕ)
+  [fact (nat.prime p)]
+  (HH : p ≠ ℓ)
+  [char_p K p]
+  [char_p F ℓ]
+  (htwo : (2 : F) ≠ 0)
+  (T : submodule F (mul_base_change K F)) 
+  (hT : T.dual_annihilator.acl) : 
+  ∃ (R : valuation_subring K)
+    (H : submodule F (mul_base_change K F))
+    (hTH : T ≤ H)
+    (units : ∀ u : Kˣ, u ∈ R.unit_group → u.as ∈ H)
+    (principal_units : ∀ u : Kˣ, u ∈ R.principal_unit_group → u.as ∈ T)
+    (fd : finite_dimensional F (↥H ⧸ T.comap H.subtype)),
+    finrank F (↥H ⧸ T.comap H.subtype) ≤ 1 := 
+begin
+  let T' := mul_subgroup.mk' T.restrict,
+  let H' := mul_subgroup.mk' T.nonrig.restrict,
+  let P : rigid_pair T' H' := main_theorem_mul_setup.mk_rigid_pair T hT,
+  obtain ⟨t,ht1,ht2,ht3⟩ := P.exists_preadditive,
+  let t' : Kˣ := units.mk0 t ht1,
+  let E := T.nonrig ⊔ (submodule.span F ({t'.as} : set (mul_base_change K F))),
+  have hE : E = T.nonrig,
+  { suffices : (submodule.span F ({t'.as} : set (mul_base_change K F))) ≤ T.nonrig,
+    { dsimp [E], exact sup_eq_left.mpr this, },
+    rw [submodule.span_le, set.singleton_subset_iff],
+    change t'.as ∈ T.nonrig,
+    suffices : (2 : F) • t'.as ∈ T.nonrig,
+    { convert T.nonrig.smul_mem ((2 : F)⁻¹) this using 1,
+      rw [← mul_smul, inv_mul_cancel htwo, one_smul] },
+    rw [(show (2 : F) = 1 + 1, by ring), add_smul, one_smul, ← units.as_mul],
+    obtain ⟨u,hu⟩ := ht2, convert hu, ext, refl },
+  let P' : rigid_pair T' (H'.adjoin_ne_zero t ht1) := _,
+  change rigid_pair.preadditive P' at ht3,
+  let R := ht3.valuation_subring,
+  use [R, T.nonrig, T.le_nonrig],
+  refine ⟨_,_,_,_⟩,
+  { intros u hu, 
+    rw ← hE,
+    suffices : H'.adjoin_ne_zero t ht1 ≤ mul_subgroup.mk' E.restrict,
+    { have hh := ht3.mem_of_mem_units u hu,
+      change u ∈ E.restrict,
+      suffices : (u : K) ∈ mul_subgroup.mk' E.restrict,
+      { obtain ⟨h1,h2⟩ := this, 
+        convert h2, ext, refl },
+      exact this hh, },
+    apply mul_subgroup.adjoin_ne_zero_le,
+    { intros u hu,  
+      use H'.is_unit_of_mem hu,
+      apply submodule.mem_sup_left,
+      obtain ⟨v,hv⟩ := hu,
+      exact hv },
+    { use is_unit.mk0 t ht1, 
+      apply submodule.mem_sup_right,
+      convert submodule.mem_span_singleton_self _, ext, refl } },
+  { intros u hu, 
+    have := ht3.mem_of_mem_principal_units u hu,
+    obtain ⟨v,hv⟩ := this, 
+    convert hv, ext, refl },
+  { apply bridge_char_finite_dimensional p ℓ HH _ hT },
+  { apply bridge_char_codim p ℓ HH _ hT },
 end

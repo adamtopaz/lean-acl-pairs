@@ -48,3 +48,73 @@ begin
     exact fact.out _ },
 end
 
+lemma bridge_char_finite_dimensional
+  [char_p K p]
+  [char_p F ℓ]
+  (HH : p ≠ ℓ)
+  (T : submodule F (mul_base_change K F))
+  (hT : T.dual_annihilator.acl) : 
+  finite_dimensional F (T.nonrig ⧸ T.comap T.nonrig.subtype) := 
+begin
+  by_cases hh : ∃ (u : Kˣ), T.nonrig_condition u,
+  swap, 
+  { push_neg at hh, 
+    have : set_of T.nonrig_condition = ∅,
+    { rw set.eq_empty_iff_forall_not_mem,  
+      exact hh },
+    dsimp [submodule.nonrig],
+    rw [this, set.image_empty],
+    have he := submodule.mkq_comp_sup_mod_surjective (submodule.span F ∅) T,
+    let e : _ →ₗ[_] _ := _, change function.surjective e at he,
+    haveI : finite_dimensional F (submodule.span F (∅ : set (mul_base_change K F))), 
+    { apply finite_dimensional.span_of_finite, exact set.finite_empty },
+    apply e.finite_dimensional_of_surjective,
+    rwa linear_map.range_eq_top },
+  obtain ⟨u,hu⟩ := hh,
+  apply T.finite_dimensional_of_not_linear_independent 
+    (units.as '' set_of T.nonrig_condition) u.as ⟨u,hu,rfl⟩ hu.1,
+  rintros a ⟨a,ha,rfl⟩,
+  apply bridge_char p ℓ HH T hT a u ha.1 hu.1 
+    (λ y hy, (ha.2 y hy).1)
+    (λ y hy, (ha.2 y hy).2)
+    (λ y hy, (hu.2 y hy).1)
+    (λ y hy, (hu.2 y hy).2)
+end
+
+theorem bridge_char_codim 
+  [char_p K p]
+  [char_p F ℓ]
+  (HH : p ≠ ℓ)
+  (T : submodule F (mul_base_change K F)) 
+  (hT : T.dual_annihilator.acl) : 
+  finite_dimensional.finrank F (T.nonrig ⧸ T.comap T.nonrig.subtype) ≤ 1 := 
+begin
+  have fd : finite_dimensional F (T.nonrig ⧸ T.comap T.nonrig.subtype) := 
+    bridge_char_finite_dimensional p ℓ HH T hT,
+  by_cases hh : ∃ (u : Kˣ), T.nonrig_condition u,
+  swap,
+  { push_neg at hh, 
+    have : set_of T.nonrig_condition = ∅,
+    { rw set.eq_empty_iff_forall_not_mem,  
+      exact hh },
+    dsimp [submodule.nonrig] at *,
+    rw [this, set.image_empty] at *,
+    have he := submodule.mkq_comp_sup_mod_surjective (submodule.span F ∅) T,
+    resetI,
+    rw finrank_le_one_iff,
+    use 0, rintros ⟨w,hw⟩, use 0, rw submodule.mem_sup at hw,
+    obtain ⟨y,hy,z,hz,rfl⟩ := hw,
+    simp only [submodule.span_empty, submodule.mem_bot] at hz,
+    symmetry,
+    simpa only [hz, add_zero, submodule.quotient.quot_mk_eq_mk, smul_zero, 
+      submodule.quotient.mk_eq_zero] },
+  obtain ⟨u,hu⟩ := hh,
+  apply T.finrank_le_one_of_not_linear_independent 
+    (units.as '' set_of T.nonrig_condition) u.as ⟨u,hu,rfl⟩ hu.1,
+  rintros a ⟨a,ha,rfl⟩,
+  apply bridge_char p ℓ HH T hT a u ha.1 hu.1 
+    (λ y hy, (ha.2 y hy).1)
+    (λ y hy, (ha.2 y hy).2)
+    (λ y hy, (hu.2 y hy).1)
+    (λ y hy, (hu.2 y hy).2)
+end
