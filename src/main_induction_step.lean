@@ -942,4 +942,11 @@ begin
       refine ⟨_, by exact_mod_cast this⟩, } }
 end
 
+
+--lemma map_to_frac_horizontal (n m : ℕ) (hn : (n : F) ≠ 0) (hm : m ≠ 0) :
+--  (φ ((1 + m - n) + m * x + y) = mk[F] (n,m,1)) ∧ 
+theorem main_theorem_char (m : ℕ) (hm : m ≠ 0) : 
+  (φ ((m-1) + m * x) = mk[F] (1,m,0)) := 
+by convert (map_to_frac_horizontal C 1 m _ hm).2; norm_num
+
 end setup
