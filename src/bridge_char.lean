@@ -9,11 +9,12 @@ open_locale classical
 open module
 
 variables {K F : Type*} [field K] [field F] 
-variables (p : ℕ) [fact (nat.prime p)] 
+variables (p ℓ : ℕ) [fact (nat.prime p)] 
 
 theorem bridge_char
-  [char_zero F]
   [char_p K p]
+  [char_p F ℓ]
+  (HH : p ≠ ℓ)
   (H : submodule F (mul_base_change K F))
   (hH : H.dual_annihilator.acl)
   (u v : Kˣ)
@@ -35,6 +36,15 @@ begin
   rw S.φ_map_u at key,
   replace key := projectivization.affine_embedding_injective _ _ key,
   simp only [prod.mk.inj_iff, self_eq_add_left, nat.cast_eq_zero, eq_self_iff_true, and_true] at key,
-  exact (fact.out (nat.prime p)).ne_zero key,
+  apply HH,
+  erw char_p.cast_eq_zero_iff F ℓ at key,
+  by_cases hℓ : ℓ = 0,
+  { rw hℓ at key, simp only [zero_dvd_iff] at key, rwa hℓ },
+  { have : nat.prime ℓ, 
+    { cases char_p.char_is_prime_or_zero F ℓ, { exact h }, exact false.elim (hℓ h) },
+    rw nat.dvd_prime at key, cases key,
+    { have := nat.prime.ne_one this, exact false.elim (this key) },
+    { exact key.symm },
+    exact fact.out _ },
 end
 
