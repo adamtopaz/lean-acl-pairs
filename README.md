@@ -7,11 +7,12 @@ $$ f(u) \cdot g(v) = f(v) \cdot g(u) $$
 
 whenever $u,v \in K^\times$ satisfy $u + v = 1$ in $K$.
 
-This repository contains a formalization of the relationship between so-called "alternating pairs" and valuation rings. 
+This repository contains a formalization of the relationship between such alternating pairs and valuation rings. 
 
 ## Valuations yield alternating pairs.
-First of all, alternating pairs arise naturally in the presence of valuations, and this is the first (relatively easy) result formalized in this repository.
-The following code can be found in the file `src/main_converse.lean`.
+First we discuss the "trivial" direction, saying that alternating pairs arise naturally in the presence of valuations as a relatively easy consequence of the ultrametric inequality.
+The formal statement that we prove along these lines can be found in the file `src/main_converse.lean`.
+We have reproduced the main result from this file (along with some "setup" code) in the following code block.
 
 ```lean
 -- We are given two fields, `K` and `F`
@@ -95,7 +96,7 @@ We do this in two cases:
 
 ### The first case
 The first case appears in `src/main_theorem.lean`. 
-The relevant formal statement is reproduced below.
+The relevant formal statement is reproduced below (the "setup" portions appearing above have been omitted).
 ```lean
 -- We now assume that `F` is a prime field.
 -- The is defined as saying that every element `a : F` can be expressed as 
@@ -144,7 +145,7 @@ theorem main_alternating_theorem_of_prime_field
 
 ### The second case
 The second case appears in `src/main_theorem.lean`. 
-The relevant formal statement is reproduced below.
+The relevant formal statement is reproduced below (the "setup" portions appearing above have been omitted).
 ```lean
 -- We give ourselves to natural numbers, `p` and `ℓ`, with `p` being prime.
 variables (p ℓ : ℕ) [fact (nat.prime p)]
