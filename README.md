@@ -92,7 +92,7 @@ theorem valuation_implies_alternating
 The primary goal of this work is the formalization of *converses* to the above theorem, which shows the existence of valuations in the presence of alternating pairs.
 We do this in two cases:
 1. In the case where `F` is a prime field.
-2. In the case where `K` has positive characteristic `p` and `F` has characteristic not dividing `2 \cdot p`. 
+2. In the case where `K` has positive characteristic `p` and `F` has characteristic not dividing `2 * p`. 
 
 ### The first case
 The first case appears in `src/main_theorem.lean`. 
