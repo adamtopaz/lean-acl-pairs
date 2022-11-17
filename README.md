@@ -2,7 +2,7 @@
 
 Let $K$ and $F$ be two fields.
 An *alternating pair* is a pair of homomorphisms $f,g : K^\times \to F$ such that 
-\[ f(u) \cdot g(v) = f(v) \cdot g(u) \]
+\\[ f(u) \cdot g(v) = f(v) \cdot g(u) \\]
 whenever $u,v \in K^\times$ satisfy $u + v = 1$ in $K$.
 
 This repository contains a formalization of the relationship between so-called "alternating pairs" and valuation rings. 
