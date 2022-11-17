@@ -37,7 +37,7 @@ local attribute [instance]
   module.dual.weak_topology
 
 /- 
-The converse to the main theorem about `acl`-pairs. 
+The converse to the main theorem about alternating pairs. 
 This is a simple result, and we prove it without many dependencies from the imports.
 -/
 theorem main_acl_converse
@@ -64,7 +64,7 @@ theorem main_acl_converse
   (fd : finite_dimensional F (↥D ⧸ I.comap D.subtype))
   -- (6) and `I` has codimension at most `1` in `D`,
   (codim : finrank F (↥D ⧸ I.comap D.subtype) ≤ 1) :
-  -- then any pair of elements of `D` satisfies the `acl`-condition.
+  -- then any pair of elements of `D` satisfies the alternating condition.
   ∀ (u v : Kˣ) (huv : (u : K) + v = 1) 
     (f g : dual F (F ⊗[ℤ] additive Kˣ))
     (hf : f ∈ D) (hg : g ∈ D), 
@@ -153,7 +153,7 @@ variable [is_prime_field F]
 example : is_prime_field ℚ := infer_instance
 example (p : ℕ) [fact (nat.prime p)] : is_prime_field (zmod p) := infer_instance
 
-/- The main theorem of `acl`-pairs. -/
+/- The main theorem of alternating pairs. -/
 theorem main_acl_theorem 
   -- Given a submodule `D` of `dual F (F ⊗[ℤ] additive Kˣ)`,
   (D : submodule F (dual F (F ⊗[ℤ] additive Kˣ))) 
@@ -161,7 +161,7 @@ theorem main_acl_theorem
   (h1 : is_closed (D : set (dual F (F ⊗[ℤ] additive Kˣ))))
   -- (2) every element of `D` maps `[(-1 : Kˣ)]ₘ` to zero;
   (h2 : ∀ (f : dual F (F ⊗[ℤ] additive Kˣ)) (hf : f ∈ D), f [-1]ₘ = 0) 
-  -- (3) satisfies the `acl`-condition, i.e. whenever `u v : Kˣ` satisfy
+  -- (3) satisfies the alternating condition, i.e. whenever `u v : Kˣ` satisfy
   -- `(u : K) + v = 1`, then `f [u]ₘ * g [v]ₘ = f [v]ₘ * g [u]ₘ`.
   (h3 : ∀ (u v : Kˣ) (huv : (u : K) + v = 1) 
     (f g : dual F (F ⊗[ℤ] additive Kˣ))

@@ -1,6 +1,6 @@
 # Valuations and `acl`-pairs.
 
-This repository contains a formalization of the relationship between so-called `acl`-pairs and valuation rings. The formal statement (reproduced below) of the main theorem, and its formal proof, can be found in `src/main_theorem.lean` and its imported files.
+This repository contains a formalization of the relationship between so-called "alternating pairs" and valuation rings. The formal statement (reproduced below) of the main theorem, and its formal proof, can be found in `src/main_theorem.lean` and its imported files.
 
 ```lean
 -- We are given two fields, `K` and `F`
@@ -47,7 +47,7 @@ variable [is_prime_field F]
 example : is_prime_field ℚ := infer_instance
 example (p : ℕ) [fact (nat.prime p)] : is_prime_field (zmod p) := infer_instance
 
-/- The main theorem of `acl`-pairs. -/
+/- The main theorem of alternating pairs. -/
 theorem main_acl_theorem 
   -- Given a submodule `D` of `dual F (F ⊗[ℤ] additive Kˣ)`,
   (D : submodule F (dual F (F ⊗[ℤ] additive Kˣ))) 
@@ -55,7 +55,7 @@ theorem main_acl_theorem
   (h1 : is_closed (D : set (dual F (F ⊗[ℤ] additive Kˣ))))
   -- (2) every element of `D` maps `[(-1 : Kˣ)]ₘ` to zero;
   (h2 : ∀ (f : dual F (F ⊗[ℤ] additive Kˣ)) (hf : f ∈ D), f [-1]ₘ = 0) 
-  -- (3) satisfies the `acl`-condition, i.e. whenever `u v : Kˣ` satisfy
+  -- (3) satisfies the alternating condition, i.e. whenever `u v : Kˣ` satisfy
   -- `(u : K) + v = 1`, then `f [u]ₘ * g [v]ₘ = f [v]ₘ * g [u]ₘ`.
   (h3 : ∀ (u v : Kˣ) (huv : (u : K) + v = 1) 
     (f g : dual F (F ⊗[ℤ] additive Kˣ))
@@ -70,25 +70,25 @@ theorem main_acl_theorem
     -- (1) `I` is contained in `D`;
     (le : I ≤ D)
     -- (2) the elements `f` of `I` satisfy `f [u]ₘ = 0` for `R`-units;
-    (units : ∀ (u : Kˣ) (hu : u ∈ R.units) 
+    (units : ∀ (u : Kˣ) (hu : u ∈ R.unit_group) 
       (f : dual F (F ⊗[ℤ] additive Kˣ))
       (hf : f ∈ I), f [u]ₘ = 0)
     -- (3) the elements `f` of `D` satisfy `f [u]ₘ = 0` for `R`-principal-units;
-    (punits : ∀ (u : Kˣ) (hu : u ∈ R.principal_units) 
+    (punits : ∀ (u : Kˣ) (hu : u ∈ R.principal_unit_group) 
       (f : dual F (F ⊗[ℤ] additive Kˣ))
       (hf : f ∈ D), f [u]ₘ = 0)
     -- (4) the quotient `D / I` is finite dimensional;
     (fd : finite_dimensional F (↥D ⧸ I.comap D.subtype)),
     -- and `I` has codimension at most one in `D`.
     finrank F (↥D ⧸ I.comap D.subtype) ≤ 1 := 
-...
+-- the proof...
 ```
 
 The converse of the above theorem is much easier to prove, and holds without the additional hypothesis that `F` is a prime field.
 It is also formalized in the same file, with the following statement.
 ```lean
 /- 
-The converse to the main theorem about `acl`-pairs. 
+The converse to the main theorem about alternating pairs. 
 This is a simple result, and we prove it without many dependencies from the imports.
 -/
 theorem main_acl_converse
@@ -104,23 +104,23 @@ theorem main_acl_converse
   -- (2) the elements of `D` act trivially on `-1 : Kˣ`;
   (hnegone : ∀ (f : dual F (F ⊗[ℤ] additive Kˣ)) (hf : f ∈ D), f [-1]ₘ = 0) 
   -- (3) the elements of `I` act trivially on the units of `R`;
-  (units : ∀ (u : Kˣ) (hu : u ∈ R.units) 
+  (units : ∀ (u : Kˣ) (hu : u ∈ R.unit_group) 
     (f : dual F (F ⊗[ℤ] additive Kˣ))
     (hf : f ∈ I), f [u]ₘ = 0)
   -- (4) the elements of `D` act trivially on the principal units of `R`;
-  (punits : ∀ (u : Kˣ) (hu : u ∈ R.principal_units) 
+  (punits : ∀ (u : Kˣ) (hu : u ∈ R.principal_unit_group) 
     (f : dual F (F ⊗[ℤ] additive Kˣ))
     (hf : f ∈ D), f [u]ₘ = 0)
   -- (5) `D/I` is finite dimensional;
   (fd : finite_dimensional F (↥D ⧸ I.comap D.subtype))
   -- (6) and `I` has codimension at most `1` in `D`,
   (codim : finrank F (↥D ⧸ I.comap D.subtype) ≤ 1) :
-  -- then any pair of elements of `D` satisfies the `acl`-condition.
+  -- then any pair of elements of `D` satisfies the alternating condition.
   ∀ (u v : Kˣ) (huv : (u : K) + v = 1) 
     (f g : dual F (F ⊗[ℤ] additive Kˣ))
     (hf : f ∈ D) (hg : g ∈ D), 
     f [u]ₘ * g [v]ₘ = f [v]ₘ * g [u]ₘ := 
-...
+-- the proof...
 ```
 
 ## References
