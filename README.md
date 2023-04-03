@@ -144,7 +144,7 @@ theorem main_alternating_theorem_of_prime_field
 ```
 
 ### The second case
-The second case appears in `src/main_theorem.lean`. 
+The second case appears in `src/main_theorem_char.lean`. 
 The relevant formal statement is reproduced below (the "setup" portions appearing above have been omitted).
 ```lean
 -- We give ourselves to natural numbers, `p` and `ℓ`, with `p` being prime.
